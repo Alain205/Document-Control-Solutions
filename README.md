@@ -8,7 +8,14 @@ A browser-based prototype for centralising audit and inspection evidence from mu
 2. Run `node server.mjs`.
 3. Open <http://localhost:4173>.
 
-The prototype stores changes in the current browser using `localStorage`. It does not upload files to a server yet. This keeps the MVP safe for demonstrations, but it is not production document storage.
+The application stores its records in `data/db.json` and uploaded files in `data/uploads/`. Both are created automatically and excluded from Git because they contain operational data.
+
+Demo accounts (all use password `demo2026`):
+
+- Administrator: `christiane.matabaro@sonas.cd`
+- Manager (Nord-Kivu): `manager@sonas.cd`
+- Employee (Sud-Kivu): `employee@sonas.cd`
+- Sender (Kinshasa): `sender@sonas.cd`
 
 ## Included
 
@@ -18,10 +25,13 @@ The prototype stores changes in the current browser using `localStorage`. It doe
 - Upload intake form
 - Approve and request-correction actions
 - Missing-document visibility
-- Persistent browser data
+- Server-side persistent data and file uploads
+- Password-based authentication and expiring sessions
+- Profile and password settings
+- Authenticated file downloads
 - Exportable audit trail
 - Responsive mobile layout
 
 ## Production roadmap
 
-Add authenticated users and roles, encrypted object storage, a database, server-side audit logs, retention rules, backups, OCR, notifications, and deployment before using the system for real records.
+Before production use, add HTTPS, a production database, encrypted object storage, multi-user role administration, backups, retention rules, malware scanning, OCR, notifications, and deployment monitoring.

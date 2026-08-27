@@ -10,6 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/styles.css" />
   <link rel="stylesheet" href="/login.css" />
+  <link rel="stylesheet" href="/account.css" />
   <style>.header-logout{white-space:nowrap}.header-logout span{font-size:15px;margin-right:4px}@media(max-width:760px){.header-logout{font-size:0;padding:10px}.header-logout span{font-size:16px;margin:0}}</style>
 </head>
 <body>
@@ -21,14 +22,14 @@
       <button class="nav-item" data-view="sites"><span>◇</span> Provinces</button>
       <button class="nav-item" data-view="audit"><span>↻</span> Journal d’audit</button>
     </nav>
-    <div class="sidebar-foot"><div class="avatar">CM</div><div><strong>Christiane Matabaro</strong><small>Administratrice nationale</small></div></div>
+    <div class="sidebar-foot"><div class="user-row"><div class="avatar" id="userInitials">CM</div><div class="user-copy"><strong id="userName">Christiane Matabaro</strong><small id="userRole">Administratrice nationale</small></div></div><div class="account-actions"><button id="settingsBtn" title="Paramètres">⚙ Paramètres</button><button id="logoutBtn" title="Se déconnecter">↪ Déconnexion</button></div></div>
   </aside>
 
   <main>
     <header>
       <button class="mobile-menu" id="menuBtn">☰</button>
       <div><p class="eyebrow" id="eyebrow">SIÈGE NATIONAL · RDC</p><h1 id="pageTitle">Bonjour, Christiane Matabaro</h1></div>
-      <div class="header-actions"><button class="icon-btn" title="Notifications">♢<i></i></button><button class="secondary header-logout" id="logoutBtn"><span>↪</span> Se déconnecter</button><button class="primary" id="uploadBtn">＋ Ajouter un document</button></div>
+      <div class="header-actions"><button class="icon-btn" id="notificationBtn" title="Notifications">♢<i></i></button><button class="primary" id="uploadBtn">＋ Ajouter un document</button></div>
     </header>
 
     <section id="dashboardView" class="view active">
@@ -61,6 +62,7 @@
 
   <div class="modal" id="uploadModal" aria-hidden="true"><div class="modal-card"><button class="close" data-close>×</button><p class="eyebrow">NOUVELLE PIÈCE</p><h2>Ajouter un document</h2><p class="muted">Transmettez une preuve au siège national pour vérification.</p><form id="uploadForm"><label>Titre du document<input name="title" required placeholder="Ex. Reçus de carburant — août"></label><div class="form-grid"><label>Province<select name="site" id="uploadSite" required></select></label><label>Catégorie<select name="category"><option>Reçu</option><option>Inspection</option><option>Bordereau</option><option>Certificat</option><option>Facture</option><option>Autre</option></select></label></div><div class="form-grid"><label>Référence<input name="reference" required placeholder="REC-2026-001"></label><label>Date du document<input name="date" type="date" required></label></div><label class="dropzone" id="dropzone"><input name="file" type="file" accept=".pdf,.png,.jpg,.jpeg,.doc,.docx"><span class="upload-icon">↑</span><strong id="fileLabel">Choisir ou déposer un fichier ici</strong><small>PDF, image ou document Word · 10 Mo maximum</small></label><label>Notes<textarea name="notes" placeholder="Contexte facultatif pour la vérification"></textarea></label><div class="modal-actions"><button type="button" class="secondary" data-close>Annuler</button><button type="submit" class="primary">Soumettre pour vérification</button></div></form></div></div>
   <div class="modal" id="detailModal" aria-hidden="true"><div class="modal-card detail-card"><button class="close" data-close>×</button><div id="detailContent"></div></div></div>
+  <div class="modal" id="settingsModal" aria-hidden="true"><div class="modal-card"><button class="close" data-close>×</button><p class="eyebrow">COMPTE</p><h2>Paramètres</h2><p class="muted">Mettez à jour votre profil ou votre mot de passe.</p><form id="settingsForm"><label>Nom complet<input name="name" required></label><label>Adresse e-mail<input name="email" type="email" required></label><div class="form-grid"><label>Mot de passe actuel<input name="currentPassword" type="password"></label><label>Nouveau mot de passe<input name="newPassword" type="password" minlength="8" placeholder="8 caractères minimum"></label></div><div class="modal-actions"><button type="button" class="secondary" data-close>Annuler</button><button type="submit" class="primary">Enregistrer</button></div></form></div></div>
   <div id="toast" class="toast"></div>
   <div id="loginScreen" class="login-screen"><section class="login-card"><div class="login-brand"><img class="login-logo" src="/assets/sonas-logo.png" alt="Logo SONAS"><div><strong>SONAS</strong><small>Leader des assurances en RDC</small></div></div><p class="eyebrow">PORTAIL SÉCURISÉ</p><h1>Bienvenue, Christiane</h1><p class="muted">Connectez-vous pour accéder au contrôle documentaire national.</p><form id="loginForm"><label>Adresse e-mail<input type="email" name="email" value="christiane.matabaro@sonas.cd" required></label><label>Mot de passe<div class="password-wrap"><input type="password" name="password" value="demo2026" required minlength="6"><button type="button" id="togglePassword">Afficher</button></div></label><div class="login-options"><label><input type="checkbox" checked> Se souvenir de moi</label><a href="#">Mot de passe oublié ?</a></div><button class="primary login-button" type="submit">Se connecter</button><p class="demo-hint">Accès de démonstration : les identifiants sont déjà remplis.</p></form></section><div class="login-visual"><div><p class="eyebrow">VISIBILITÉ NATIONALE</p><h2>Chaque pièce. Chaque province. Un seul registre.</h2><p>Centralisez les preuves d’audit et d’inspection de vos équipes à travers la RDC.</p></div></div></div>
   <script src="/app.js"></script>
