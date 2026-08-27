@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#12352d" />
+  <title>SONAS — Contrôle documentaire</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="stylesheet" href="/login.css" />
+  <style>.header-logout{white-space:nowrap}.header-logout span{font-size:15px;margin-right:4px}@media(max-width:760px){.header-logout{font-size:0;padding:10px}.header-logout span{font-size:16px;margin:0}}</style>
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand"><img class="brand-logo" src="/assets/sonas-logo.png" alt="Logo SONAS"><div><strong>SONAS</strong><small>Contrôle documentaire</small></div></div>
+    <nav id="nav">
+      <button class="nav-item active" data-view="dashboard"><span>⌂</span> Vue d’ensemble</button>
+      <button class="nav-item" data-view="documents"><span>▤</span> Documents <b id="reviewBadge">3</b></button>
+      <button class="nav-item" data-view="sites"><span>◇</span> Provinces</button>
+      <button class="nav-item" data-view="audit"><span>↻</span> Journal d’audit</button>
+    </nav>
+    <div class="sidebar-foot"><div class="avatar">CM</div><div><strong>Christiane Matabaro</strong><small>Administratrice nationale</small></div></div>
+  </aside>
+
+  <main>
+    <header>
+      <button class="mobile-menu" id="menuBtn">☰</button>
+      <div><p class="eyebrow" id="eyebrow">SIÈGE NATIONAL · RDC</p><h1 id="pageTitle">Bonjour, Christiane Matabaro</h1></div>
+      <div class="header-actions"><button class="icon-btn" title="Notifications">♢<i></i></button><button class="secondary header-logout" id="logoutBtn"><span>↪</span> Se déconnecter</button><button class="primary" id="uploadBtn">＋ Ajouter un document</button></div>
+    </header>
+
+    <section id="dashboardView" class="view active">
+      <div class="summary-line"><p>Voici la situation documentaire de toutes les provinces.</p><span><i class="pulse"></i> Mis à jour à l’instant</span></div>
+      <div class="metrics" id="metrics"></div>
+      <div class="dashboard-grid">
+        <article class="panel compliance-panel">
+          <div class="panel-head"><div><p class="eyebrow">CONFORMITÉ</p><h2>Performance par province</h2></div><button class="text-btn" data-goto="sites">Tout voir →</button></div>
+          <div id="sitePerformance" class="site-performance"></div>
+        </article>
+        <article class="panel action-panel">
+          <div class="panel-head"><div><p class="eyebrow coral">À TRAITER</p><h2>File d’actions</h2></div><span id="actionCount" class="count-pill"></span></div>
+          <div id="actionQueue"></div>
+        </article>
+      </div>
+      <article class="panel recent-panel">
+        <div class="panel-head"><div><p class="eyebrow">ACTIVITÉ RÉCENTE</p><h2>Derniers documents</h2></div><button class="text-btn" data-goto="documents">Ouvrir le registre →</button></div>
+        <div class="table-wrap"><table><thead><tr><th>Document</th><th>Province</th><th>Catégorie</th><th>Ajouté</th><th>Statut</th><th></th></tr></thead><tbody id="recentTable"></tbody></table></div>
+      </article>
+    </section>
+
+    <section id="documentsView" class="view">
+      <div class="toolbar"><div class="search"><span>⌕</span><input id="searchInput" placeholder="Rechercher un document, une référence ou une province…"></div><select id="statusFilter"><option value="all">Tous les statuts</option><option>En attente</option><option>Approuvé</option><option>À corriger</option><option>Manquant</option></select><select id="siteFilter"><option value="all">Toutes les provinces</option></select></div>
+      <article class="panel register"><div class="table-wrap"><table><thead><tr><th>Document</th><th>Référence</th><th>Province</th><th>Catégorie</th><th>Date</th><th>Statut</th><th></th></tr></thead><tbody id="documentTable"></tbody></table></div><div id="emptyState" class="empty hidden">Aucun document ne correspond à ces filtres.</div></article>
+    </section>
+
+    <section id="sitesView" class="view"><div id="siteCards" class="site-cards"></div></section>
+    <section id="auditView" class="view"><article class="panel"><div class="panel-head"><div><p class="eyebrow">TRAÇABILITÉ</p><h2>Historique complet des activités</h2></div><button class="secondary" id="exportBtn">Exporter en CSV</button></div><div id="auditList" class="audit-list"></div></article></section>
+  </main>
+
+  <div class="modal" id="uploadModal" aria-hidden="true"><div class="modal-card"><button class="close" data-close>×</button><p class="eyebrow">NOUVELLE PIÈCE</p><h2>Ajouter un document</h2><p class="muted">Transmettez une preuve au siège national pour vérification.</p><form id="uploadForm"><label>Titre du document<input name="title" required placeholder="Ex. Reçus de carburant — août"></label><div class="form-grid"><label>Province<select name="site" id="uploadSite" required></select></label><label>Catégorie<select name="category"><option>Reçu</option><option>Inspection</option><option>Bordereau</option><option>Certificat</option><option>Facture</option><option>Autre</option></select></label></div><div class="form-grid"><label>Référence<input name="reference" required placeholder="REC-2026-001"></label><label>Date du document<input name="date" type="date" required></label></div><label class="dropzone" id="dropzone"><input name="file" type="file" accept=".pdf,.png,.jpg,.jpeg,.doc,.docx"><span class="upload-icon">↑</span><strong id="fileLabel">Choisir ou déposer un fichier ici</strong><small>PDF, image ou document Word · 10 Mo maximum</small></label><label>Notes<textarea name="notes" placeholder="Contexte facultatif pour la vérification"></textarea></label><div class="modal-actions"><button type="button" class="secondary" data-close>Annuler</button><button type="submit" class="primary">Soumettre pour vérification</button></div></form></div></div>
+  <div class="modal" id="detailModal" aria-hidden="true"><div class="modal-card detail-card"><button class="close" data-close>×</button><div id="detailContent"></div></div></div>
+  <div id="toast" class="toast"></div>
+  <div id="loginScreen" class="login-screen"><section class="login-card"><div class="login-brand"><img class="login-logo" src="/assets/sonas-logo.png" alt="Logo SONAS"><div><strong>SONAS</strong><small>Leader des assurances en RDC</small></div></div><p class="eyebrow">PORTAIL SÉCURISÉ</p><h1>Bienvenue, Christiane</h1><p class="muted">Connectez-vous pour accéder au contrôle documentaire national.</p><form id="loginForm"><label>Adresse e-mail<input type="email" name="email" value="christiane.matabaro@sonas.cd" required></label><label>Mot de passe<div class="password-wrap"><input type="password" name="password" value="demo2026" required minlength="6"><button type="button" id="togglePassword">Afficher</button></div></label><div class="login-options"><label><input type="checkbox" checked> Se souvenir de moi</label><a href="#">Mot de passe oublié ?</a></div><button class="primary login-button" type="submit">Se connecter</button><p class="demo-hint">Accès de démonstration : les identifiants sont déjà remplis.</p></form></section><div class="login-visual"><div><p class="eyebrow">VISIBILITÉ NATIONALE</p><h2>Chaque pièce. Chaque province. Un seul registre.</h2><p>Centralisez les preuves d’audit et d’inspection de vos équipes à travers la RDC.</p></div></div></div>
+  <script src="/app.js"></script>
+</body>
+</html>
